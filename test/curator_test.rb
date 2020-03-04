@@ -111,21 +111,40 @@ class CuratorTest < Minitest::Test
     }
     assert_equal expected, @curator.photographs_by_artist
   end
+
+  def test_it_can_find_artists_with_multiple_photographs
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
+    @curator.add_artist(@artist_3)
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
+    @curator.add_photograph(@photo_3)
+    @curator.add_photograph(@photo_4)
+
+    assert_equal ["Diane Arbus"], @curator.artists_with_multiple_photographs
+  end
+
+  def test_it_can_find_artists_by_country
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
+    @curator.add_artist(@artist_3)
+    assert_equal [@artist_2, @artist_3], @curator.artists_by_country("United States")
+    assert_equal [@artist_1], @curator.artists_by_country("France")
+    assert_equal [], @curator.artists_by_country("Argentina")
+  end
+
+  def test_it_can_find_photographs_taken_by_artists_from_a_given_country
+    @curator.add_artist(@artist_1)
+    @curator.add_artist(@artist_2)
+    @curator.add_artist(@artist_3)
+    @curator.add_photograph(@photo_1)
+    @curator.add_photograph(@photo_2)
+    @curator.add_photograph(@photo_3)
+    @curator.add_photograph(@photo_4)
+
+    assert_equal [@photo_2, @photo_3, @photo_4],
+    @curator.photographs_taken_by_artist_from("United States")
+
+    assert_equal [], @curator.photographs_taken_by_artist_from("Argentina")
+  end
 end
-
-
-# pry(main)> curator.photographs_by_artist
-# # => {
-# #        #<Artist:0x00007fabc6a52340...> => [#<Photograph:0x00007fabc6933180...>],
-# #        #<Artist:0x00007fabc6c20870...> => [#<Photograph:0x00007fabc6c28e58...>],
-# #        #<Artist:0x00007fabc5ba0c70...> => [#<Photograph:0x00007fabc5bb9ef0...>, #<Photograph:0x00007fabc6b931f0...>]
-# #      }
-#
-# pry(main)> curator.artists_with_multiple_photographs
-# # => ["Diane Arbus"]
-#
-# pry(main)> curator.photographs_taken_by_artist_from("United States")
-# # => [#<Photograph:0x00007fabc6c28e58...>, #<Photograph:0x00007fabc5bb9ef0...>, #<Photograph:0x00007fabc6b931f0...>
-#
-# pry(main)> curator.photographs_taken_by_artist_from("Argentina")
-# # => []

@@ -32,4 +32,26 @@ class Curator
       acc
     end
   end
+
+  def artists_with_multiple_photographs
+    prolific_artists = @artists.find_all do |artist|
+      photographs_by_artist[artist].length > 1
+    end
+
+    prolific_artists.map do |artist|
+      artist.name
+    end
+  end
+
+  def artists_by_country(country)
+    @artists.find_all do |artist|
+      artist.country == country
+    end
+  end
+
+  def photographs_taken_by_artist_from(country)
+    artists_by_country(country).flat_map do |artist|
+      photographs_by_artist[artist]
+    end
+  end
 end
