@@ -63,6 +63,24 @@ class CuratorTest < Minitest::Test
     assert_equal [], @curator.artists
   end
 
+  def test_it_can_load_photographs
+    assert_equal [], @curator.photographs
+
+    @curator.load_photographs('./data/photographs.csv')
+    assert_equal 4, @curator.photographs.length
+    assert_instance_of Photograph, @curator.photographs.last
+    assert_equal "Rue Mouffetard, Paris (Boy with Bottles)",
+    @curator.photographs.first.name
+  end
+
+  def test_it_can_load_artists
+    assert_equal [], @curator.artists
+    @curator.load_artists('./data/artists.csv')
+    assert_equal 6, @curator.artists.length
+    assert_instance_of Artist, @curator.artists.first
+    assert_equal "Bill Cunningham", @curator.artists.last.name
+  end
+
   def test_it_can_add_photographs
     @curator.add_photograph(@photo_1)
     @curator.add_photograph(@photo_2)
@@ -148,3 +166,16 @@ class CuratorTest < Minitest::Test
     assert_equal [], @curator.photographs_taken_by_artist_from("Argentina")
   end
 end
+
+
+
+# pry(main)> curator.load_artists()
+#
+# pry(main)> curator.photographs_taken_between(1950..1965)
+# #=> [#<Photograph:0x00007fd986254740...>, #<Photograph:0x00007fd986254678...>]
+#
+# pry(main)> diane_arbus = curator.find_artist_by_id("3")
+#
+# pry(main)> curator.artists_photographs_by_age(diane_arbus)
+# => {44=>"Identical Twins, Roselle, New Jersey", 39=>"Child with Toy Hand Grenade in Central Park"}
+# ```

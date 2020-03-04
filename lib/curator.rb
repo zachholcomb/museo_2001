@@ -1,9 +1,31 @@
+require_relative 'photograph'
+require_relative 'artist'
+require 'csv'
+
 class Curator
   attr_reader :photographs, :artists
 
   def initialize
     @photographs = []
     @artists = []
+  end
+
+  def load_photographs(photo_file_path)
+    csv = CSV.read(photo_file_path, headers: true, header_converters: :symbol)
+
+    csv.map do |row|
+      new_photo = Photograph.new(row)
+      add_photograph(new_photo)
+    end
+  end
+
+  def load_artists(artist_file_path)
+    csv = CSV.read(artist_file_path, headers: true, header_converters: :symbol)
+
+    csv.map do |row|
+      new_artist = Artist.new(row)
+      add_artist(new_artist)
+    end
   end
 
   def add_photograph(photograph)
