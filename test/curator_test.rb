@@ -165,17 +165,36 @@ class CuratorTest < Minitest::Test
 
     assert_equal [], @curator.photographs_taken_by_artist_from("Argentina")
   end
+
+  def test_it_can_find_all_photographs_given_a_range_of_dates
+    @curator.load_photographs('./data/photographs.csv')
+
+    assert_equal 2, @curator.photographs_taken_between(1950..1965).length
+    
+    assert_equal "Rue Mouffetard, Paris (Boy with Bottles)",
+    @curator.photographs_taken_between(1950..1965).first.name
+
+    assert_equal "Child with Toy Hand Grenade in Central Park",
+    @curator.photographs_taken_between(1950..1965).last.name
+  end
+
+  def test_it_can_give_age_of_artist_by_photo
+    @curator.add_artist(@artist_3)
+    @curator.add_photograph(@photo_3)
+
+    assert_equal 44, @curator.artist_age_by_photo(@photo_3, @artist_3)
+  end
+
+  def test_it_can_list_artists_photos_by_age_created
+    @curator.load_artists('./data/artists.csv')
+    @curator.load_photographs('./data/photographs.csv')
+
+    expected = {
+      44=>"Identical Twins, Roselle, New Jersey",
+      39=>"Child with Toy Hand Grenade in Central Park"
+    }
+
+    diane_arbus = @curator.find_artist_by_id("3")
+    assert_equal expected, @curator.artists_photographs_by_age(diane_arbus)
+  end
 end
-
-
-
-# pry(main)> curator.load_artists()
-#
-# pry(main)> curator.photographs_taken_between(1950..1965)
-# #=> [#<Photograph:0x00007fd986254740...>, #<Photograph:0x00007fd986254678...>]
-#
-# pry(main)> diane_arbus = curator.find_artist_by_id("3")
-#
-# pry(main)> curator.artists_photographs_by_age(diane_arbus)
-# => {44=>"Identical Twins, Roselle, New Jersey", 39=>"Child with Toy Hand Grenade in Central Park"}
-# ```

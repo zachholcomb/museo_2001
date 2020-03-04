@@ -76,4 +76,22 @@ class Curator
       photographs_by_artist[artist]
     end
   end
+
+  def photographs_taken_between(year_range)
+    years = year_range.to_a
+    @photographs.find_all do |photo|
+      years.include?(photo.year.to_i)
+    end
+  end
+
+  def artist_age_by_photo(photo, artist)
+    photo.year.to_i - artist.born.to_i
+  end
+
+  def artists_photographs_by_age(artist)
+    artists_photographs(artist.id).reduce({}) do |acc, photo|
+      acc[artist_age_by_photo(photo, artist)] = photo.name
+      acc
+    end
+  end
 end
