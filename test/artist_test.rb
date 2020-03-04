@@ -26,37 +26,8 @@ class ArtistTest < Minitest::Test
     assert_equal "1984", @artist.died
     assert_equal "United States", @artist.country
   end
+
+  def test_it_can_get_artist_at_age_of_death
+    assert_equal 82, @artist.age_at_death
+  end
 end
-
-# pry(main)> require './lib/photograph'
-# #=> true
-#
-# pry(main)> require './lib/artist'
-# #=> true
-#
-# pry(main)> attributes = {
-#   id: "1",
-#   name: "Rue Mouffetard, Paris (Boy with Bottles)",
-#   artist_id: "4",
-#   year: "1954"
-# }
-#
-# pry(main)> photograph = Photograph.new(attributes)
-# #=> #<Photograph:0x00007fc2d1050c80...>
-#
-# pry(main)> photograph.id
-# #=> "1"
-#
-# pry(main)> photograph.name
-# #=> "Rue Mouffetard, Paris (Boy with Bottles)"
-#
-# pry(main)> photograph.artist_id
-# #=> "4"
-#
-# pry(main)> photograph.year
-# #=> "1954"
-#
-# pry(main)>
-
-# pry(main)> artist.age_at_death
-# #=> 82
